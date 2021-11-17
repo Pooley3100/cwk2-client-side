@@ -53,24 +53,24 @@ def sendSelection():
         "activities": activity,
         "prices": priceLevel}
 
-    # dataOptions = json.dumps(dataOptions)
+
     x = requests.post(url, json=dataOptions)
-    testResult = json.loads(x.content)
     result.append(x)
     return redirect(url_for('displayRecommend'))
 
 
 @app.route("/displayRecommendations")
 def displayRecommend():
-    resultObj = json.loads(result[0].content)
-    # resultObj = (result[0].content)
-    # resultObj = resultObj.decode("utf-8")
+
+    resultObj = (json.loads((result[0].content).decode('utf8', 'strict')))
+
     for resultS in resultObj:
         print(resultS)
     return render_template('recommendations.html', recommendations = resultObj)
 
 @app.route("/displayFlights/<city>")
 def flightSearch(city):
+    # TODO
     return "hello"
 
 
