@@ -42,7 +42,7 @@ def countriesSelect(city):
 @app.route("/recommendations")
 def sendSelection():
 
-    url = 'https://d2d5l278t3.execute-api.eu-west-2.amazonaws.com'
+    url = 'https://d2d5l278t3.execute-api.eu-west-2.amazonaws.com/recommendations'
     citiesList = selected
 
     priceLevel = ['medium']
