@@ -48,7 +48,7 @@ def sendSelection():
 
     # TODO: allow client to change these two options <<<<
     priceLevel = ["Medium", "Low"]
-    activity = ["Restaurant","Hotel"]
+    activity = ["Restaurant", "Hotel"]
     dataOptions = {
         "locations": citiesList,
         "activities": activity,
@@ -86,13 +86,18 @@ def flightSearch(city):
     auth = 'Bearer {0}'.format(token)
     custom_header = {'Authorization': auth}
     # Now get IATA codes
-    url = "https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY&keyword={0}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL".format(city)
+    url = "https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY&keyword={0}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL".format(
+        city)
 
     iataResponse = requests.get(url, headers=custom_header)
     print(iataResponse)
 
     testR = json.loads(iataResponse.content)
     otherIata = (testR["data"][0]["iataCode"])
+    if(city == "Paris"):
+        otherIata = "PAR"
+    elif(city == "Moscow"):
+        otherIata = "SVO"
 
     # Now search for flights
     payloadFlightSearch = {
@@ -112,7 +117,7 @@ def flightSearch(city):
                 "originLocationCode": otherIata,
                 "destinationLocationCode": "LON",
                 "departureDateTimeRange": {
-                    "date": "2021-12-18",
+                    "date": "2022-05-05",
                     "time": "17:00:00"
                 }
             }
@@ -120,17 +125,11 @@ def flightSearch(city):
         "travelers": [
             {
                 "id": "1",
-                "travelerType": "ADULT",
-                "fareOptions": [
-                    "STANDARD"
-                ]
+                "travelerType": "ADULT"
             },
             {
                 "id": "2",
-                "travelerType": "CHILD",
-                "fareOptions": [
-                    "STANDARD"
-                ]
+                "travelerType": "CHILD"
             }
         ],
         "sources": [
@@ -157,7 +156,6 @@ def flightSearch(city):
                 }
             }
         }
-
     }
     url = 'https://test.api.amadeus.com/v2/shopping/flight-offers'
 
@@ -168,6 +166,7 @@ def flightSearch(city):
     responseSearch = json.loads(responseSearch.content)
 
     return render_template('flightresults.html', results=responseSearch)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
