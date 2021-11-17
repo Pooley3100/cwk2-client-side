@@ -36,7 +36,7 @@ def findCity(placeID, countries):
 @app.route("/country/<city>")
 def countriesSelect(city):
     selected.append(city)
-    # TODO change colour of selection
+    # TODO change colour of selected items. <<<<
     return redirect(url_for('placesList'))
 
 
@@ -46,9 +46,9 @@ def sendSelection():
     url = 'https://d2d5l278t3.execute-api.eu-west-2.amazonaws.com/recommendations'
     citiesList = selected
 
-    # TODO: change extra options
+    # TODO: allow client to change these two options <<<<
     priceLevel = ["Medium", "Low"]
-    activity = ['Restaurant']
+    activity = ["Restaurant","Hotel"]
     dataOptions = {
         "locations": citiesList,
         "activities": activity,
