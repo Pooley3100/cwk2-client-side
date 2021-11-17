@@ -4,7 +4,7 @@ import requests, json
 app = Flask(__name__)
 
 selected = []
-
+result = []
 
 # Gets list of places
 @app.route("/")
@@ -45,6 +45,7 @@ def sendSelection():
     url = 'https://d2d5l278t3.execute-api.eu-west-2.amazonaws.com/recommendations'
     citiesList = selected
 
+    # TODO: change extra options
     priceLevel = ['medium']
     activity = ['Restaurant']
     dataOptions = {
@@ -54,8 +55,24 @@ def sendSelection():
 
     # dataOptions = json.dumps(dataOptions)
     x = requests.post(url, json=dataOptions)
+    testResult = json.loads(x.content)
+    result.append(x)
+    return redirect(url_for('displayRecommend'))
 
-    print(x.text)
+
+@app.route("/displayRecommendations")
+def displayRecommend():
+    resultObj = json.loads(result[0].content)
+    # resultObj = (result[0].content)
+    # resultObj = resultObj.decode("utf-8")
+    for resultS in resultObj:
+        print(resultS)
+    return render_template('recommendations.html', recommendations = resultObj)
+
+@app.route("/displayFlights/<city>")
+def flightSearch(city):
+    return "hello"
+
 
 
 if __name__ == '__main__':
