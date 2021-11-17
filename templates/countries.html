@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for country in countries %}
+
+
+<!--Okay so this is attempt to highlight any selected options-->
+{% set color = 'white' %}
+
+{% for select in selected %}
+{% if select == country[1]%}
+{% set color = 'bg-primary' %}
+{% endif %}
+{% endfor %}
+
+<div class="row justify-content-center pt-5 pd-5">
+    <div class="card {{color}}" style="width: 30rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ country[0]["Name"] }}</h5>
+            <div class="row">
+                <div class="col-sm-8"><p class="card-text justify-content-left">City: {{ country[1] }}</p></div>
+                <div class="col-sm-4"><p class="card-text justify-content-right">Price: {{country[0]['Price']}}</p></div>
+            </div>
+
+
+            <p class="card-text justify-content-left">Recommendation: {{country[0]['Rating']}}</p>
+            <a href="{{ url_for('countriesSelect', city = country[1])}}" class="btn btn-primary">Select</a>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+<div class="row justify-content-center pt-5 pd-5">
+    <div class="card {{color}}" style="width: 30rem;">
+        <a href="{{url_for('sendSelection')}}" class="btn btn-primary">Send Selection</a>
+    </div>
+</div>
+{% endblock content %}
